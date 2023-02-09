@@ -15,7 +15,7 @@ public partial class Projet
 
     public virtual List<Liste> Listes { get; } = new List<Liste>();
 
-    public virtual List<Utilisateur> IdUtilisateurs { get; } = new List<Utilisateur>();
+    public virtual List<UtilisateurProjet> Utilisateurs { get; } = new List<UtilisateurProjet>();
 
     public Projet() { }
 

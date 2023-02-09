@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using trellomvc.Models;
 using System;
+using Microsoft.EntityFrameworkCore;
 
 public class UtilisateurController : Controller
 {
@@ -22,6 +23,13 @@ public class UtilisateurController : Controller
     {
         return View();
     }
+    [HttpPost]
+    public IActionResult Add(Utilisateur nouvelUtilisateur)
+    {
+        context.Utilisateurs.Add(nouvelUtilisateur);
+        context.SaveChanges();
+        return RedirectToAction("Index", "Utilisateur");
+    }
 
     public IActionResult Login()
     {
@@ -35,7 +43,7 @@ public class UtilisateurController : Controller
         if (userFound != null)
         {
             userAuthenticated = userFound;
-            return RedirectToAction("Index", "Liste");
+            return RedirectToAction("Mesprojets", "Utilisateur", new { id = userFound.Id });
         }
         else
         {
@@ -47,5 +55,17 @@ public class UtilisateurController : Controller
     {
         userAuthenticated = null;
         return RedirectToAction("Index", "Home");
+    }
+
+    [HttpGet]
+    public IActionResult Mesprojets(int Id)
+    {
+        var query = from p in context.Projets
+                    join up in context.UtilisateurProjets on p.Id equals up.ProjetID
+                    where up.UtilisateurID == Id
+                    select p;
+        var mesProjets = query.ToList();
+
+        return View(mesProjets);
     }
 }

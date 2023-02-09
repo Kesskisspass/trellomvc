@@ -8,6 +8,8 @@ public partial class TrelloContext : DbContext
 {
     public TrelloContext()
     {
+        // Database.EnsureDeleted();
+        Database.EnsureCreated();
         // Utilisateur u1 = new Utilisateur("Christopher", "chris@mail.com", "0000");
         // Utilisateurs.Add(u1);
         // SaveChanges();
@@ -32,9 +34,10 @@ public partial class TrelloContext : DbContext
     public virtual DbSet<Projet> Projets { get; set; }
 
     public virtual DbSet<Utilisateur> Utilisateurs { get; set; }
+    public virtual DbSet<UtilisateurProjet> UtilisateurProjets { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseMySQL("Server=localhost;Port=3306;Database=trello;User=admin;Password=0000;");
+        => optionsBuilder.UseMySQL("Server=localhost;Port=3306;Database=trello2;User=admin;Password=0000;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -200,23 +203,15 @@ public partial class TrelloContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("nom");
 
-            entity.HasMany(d => d.IdProjets).WithMany(p => p.IdUtilisateurs)
-                .UsingEntity<Dictionary<string, object>>(
-                    "UtilisateurProjet",
-                    r => r.HasOne<Projet>().WithMany()
-                        .HasForeignKey("IdProjet")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .HasConstraintName("utilisateur_projet_ibfk_2"),
-                    l => l.HasOne<Utilisateur>().WithMany()
-                        .HasForeignKey("IdUtilisateur")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .HasConstraintName("utilisateur_projet_ibfk_1"),
-                    j =>
-                    {
-                        j.HasKey("IdUtilisateur", "IdProjet").HasName("PRIMARY");
-                        j.ToTable("utilisateur_projet");
-                        j.HasIndex(new[] { "IdProjet" }, "id_projet");
-                    });
+
+        });
+        modelBuilder.Entity<UtilisateurProjet>(entity =>
+        {
+            entity.HasKey(e => new { e.ProjetID, e.UtilisateurID }).HasName("PRIMARY");
+            entity.ToTable("utilisateurprojet");
+
+            entity.HasOne(e => e.Projet).WithMany(e => e.Utilisateurs);
+            entity.HasOne(e => e.Utilisateur).WithMany(e => e.Projets);
         });
 
         OnModelCreatingPartial(modelBuilder);

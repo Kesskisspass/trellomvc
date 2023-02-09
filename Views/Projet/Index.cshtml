@@ -18,6 +18,12 @@ else
     @foreach (var item in Model)
     {
         <p>@item.Nom</p>
+        <ul>
+            @foreach(var liste in item.Listes)
+            {
+                <li>@liste.Nom</li>
+            }
+        </ul>
         
     }
 }

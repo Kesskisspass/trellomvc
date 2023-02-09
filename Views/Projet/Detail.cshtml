@@ -1,0 +1,32 @@
+@model Projet
+<h1>@Model.Nom</h1>
+<hr>
+@if(@Model.Contenu != null)
+{
+    <p>@Model.Contenu</p>
+}
+
+
+
+<div class="row gx-5">
+@foreach (var item in Model.Listes)
+{
+    <div class="col">
+        <div class="col p-4 bg-secondary bg-opacity-10 rounded">
+            <h2>@item.Nom</h2>
+            @foreach (var carte in item.Cartes)
+            {
+                <div class="px-2 mb-2 bg-white bg-opacity-75 rounded">
+                    <h3>@carte.Titre</h3>
+                    <p>@carte.Contenu</p>
+                </div>
+            }
+            <button type="button" class="btn btn-primary">Ajouter une carte</button>
+        </div>
+    </div>
+}
+<div class="col-3">
+    <button type="button" class="btn btn-primary">Ajouter une liste</button>
+</div>
+
+</div>
