@@ -1,0 +1,16 @@
+@{
+    ViewData["Title"] = "Connexion";
+}
+
+<h1>@ViewData["Title"]</h1>
+<form method="post" action="/Utilisateur/Login" class="col-lg-4 col-md-6 mx-auto">
+    <div class="mb-3">
+        <label for="nom" class="form-label">Nom</label>
+        <input type="text" name="nom" id="nom" placeholder="Nom" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">Mot de passe</label>
+        <input type="password" name="password" id="password" placeholder="Mot de passe" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">Se connecter</button>
+</form>
