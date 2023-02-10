@@ -20,6 +20,13 @@ public class ListeController : Controller
     {
         return View();
     }
+    [HttpPost]
+    public IActionResult Add(Liste liste)
+    {
+        context.Listes.Add(liste);
+        context.SaveChanges();
+        return RedirectToAction("Detail", "Projet", new { id = UtilisateurController.userAuthenticated.Id });
+    }
 
     [HttpGet]
     public IActionResult Detail(int id)

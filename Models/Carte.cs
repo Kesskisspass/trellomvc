@@ -20,4 +20,13 @@ public partial class Carte
     public virtual List<Etiquette> Etiquettes { get; } = new List<Etiquette>();
 
     public virtual Liste IdListeNavigation { get; set; } = null!;
+    public Carte()
+    {
+    }
+    public Carte(string titre, int idListe)
+    {
+        Titre = titre;
+        IdListe = idListe;
+        DateCreation = DateTime.Now;
+    }
 }

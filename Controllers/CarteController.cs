@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using trellomvc.Models;
+using trellomvc.Controllers;
 using System;
 
 public class CarteController : Controller
@@ -18,5 +19,15 @@ public class CarteController : Controller
     public IActionResult Add()
     {
         return View();
+    }
+
+    [HttpPost]
+    public IActionResult Add(Carte carte, int Id)
+
+    {
+        Console.WriteLine("id = " + Id);
+        context.Cartes.Add(carte);
+        context.SaveChanges();
+        return RedirectToAction("Mesprojets", "Utilisateur", new { id = UtilisateurController.userAuthenticated.Id });
     }
 }
